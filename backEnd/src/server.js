@@ -4,6 +4,12 @@ import cors from "cors";
 
 import conn from "./config/conn.js"
 
+// IMPORTAÇÃO DE MODELOS
+import Postagem from "./models/postagemModel.js"
+
+// IMPOTAÇÃO DE ROTAS
+import postagemRouter from "./routes/postagemRouter.js"
+
 const PORT = process.env.PORT || 3333
 const app = express()
 
@@ -20,6 +26,9 @@ conn
         console.log(`Servidor on http://localhost:${PORT}`)
     })
 }).catch((error) => console.error(error)); 
+
+// UTILIZAÇÃO DAS ROTAS
+app.use("/postagens", postagemRouter)
 
 app.use((request, response) => {
     response.status(404).json({message: "Rota não encontrada"})
