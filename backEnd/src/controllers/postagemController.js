@@ -131,6 +131,25 @@ export const  updatePostagen = async (request, response) => { // RF04
 }
 export const  deletePostagem = async (request, response) => { // RF05
     //IMPLEMENTAÇÃO DO ZOD
+    const paramValidator = IdSchema.safeParse(request.params)
+    if(!paramValidator.success){
+        response.status(400).json({ 
+            message: "Número de identificação está inválido", 
+            detalhes: formatZodError(paramValidator.error) 
+        });
+        return;
+    }
+
+    const {id} = request.params
+    try {
+        const postagens = await Postagem.destroy({ where: { id } });
+        if(postagens === null){
+            return response.status(404).json({message: "Postagem Não Encontrada"})
+        }
+        response.status(200).json({message: "Postagem Deletada"})
+    } catch (error) {
+        response.status(500).json({message: "Erro ao buscar postagem"})
+    }
 }
 export const updateImagePostagem = async (request, response) => { // RF06
     //IMPLEMENTAÇÃO DO ZOD
