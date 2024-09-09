@@ -69,7 +69,26 @@ export const  getAllPostagem = async (request, response) => { // RF02
     }
 }
 export const  getPostagemById = async (request, response) => { // RF03
-    //IMPLEMENTAÇÃO DO ZOD
+     //IMPLEMENTAÇÃO DO ZOD
+     const paramValidator = IdSchema.safeParse(request.params)
+     if(!paramValidator.success){
+         response.status(400).json({ 
+             message: "Número de identificação está inválido", 
+             detalhes: formatZodError(paramValidator.error) 
+         });
+         return;
+     }
+ 
+     const {id} = request.params
+     try {
+         const postagens = await Postagem.findByPk(id) 
+         if(postagens === null){
+             return response.status(404).json({message: "Postagem Não Encontrada"})
+         }
+         response.status(200).json(postagens)
+     } catch (error) {
+         response.status(500).json({message: "Erro ao buscar postagem"})
+     }
 }
 export const  updatePostagen = async (request, response) => { // RF04
     //IMPLEMENTAÇÃO DO ZOD
