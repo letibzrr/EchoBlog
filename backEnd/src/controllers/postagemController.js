@@ -92,6 +92,42 @@ export const  getPostagemById = async (request, response) => { // RF03
 }
 export const  updatePostagen = async (request, response) => { // RF04
     //IMPLEMENTAÇÃO DO ZOD
+    const paramValidator = IdSchema.safeParse(request.params)
+    if(!paramValidator.success){
+        response.status(400).json({ 
+            message: "Número de identificação está inválido", 
+            detalhes: formatZodError(paramValidator.error) 
+        });
+        return;
+    }
+    const upatadeValidator = updateSchema.safeParse(request.body)
+    if(!upatadeValidator.success){
+        response.status(400).json({
+            message: "Dados para atualização estão incorretos",
+            details: formatZodError(upatadeValidator.error)
+        })
+        return
+    }
+
+    const { id } = request.params
+    const { titulo, conteudo, autor } = request.body
+
+    const postagemAtualizada = {
+        titulo,
+        conteudo,
+        autor,
+        dataPublicacao: new Date(),
+    }
+
+    try {
+        const [linhasAfetadas] = await Postagem.update(postagemAtualizada, { where: { id } });
+        if(linhasAfetadas <= 0){ // em caso de id não existente ou descrito errado
+            return response.status(404).json({message: "Postagem Não Encontrada"})
+        }
+        response.status(200).json({message: "Postagem Atualizada"})
+    } catch (error) {
+        response.status(500).json({message: "Erro ao atualizar postagem"})
+    }
 }
 export const  deletePostagem = async (request, response) => { // RF05
     //IMPLEMENTAÇÃO DO ZOD
