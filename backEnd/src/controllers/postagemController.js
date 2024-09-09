@@ -46,6 +46,27 @@ export const  createPostagem = async (request, response) => { //RF01
     }
 }
 export const  getAllPostagem = async (request, response) => { // RF02
+    const page = parseInt(request.query.page) || 1
+    const limit = parseInt(request.query.limit) || 10
+    const offset = (page - 1) * limit
+
+    try {
+        const postagens = await Postagem.findAndCountAll({
+            limit,
+            offset
+        })
+        const totalPaginas = Math.ceil(postagens.count / limit);
+        response.status(200).json({
+            totalPostagens: postagens.count,
+            totalPaginas,
+            paginaAtual: page,
+            itemsPorPagina: limit,
+            proximaPagina: totalPaginas === 0 ? null : `http://localhost:3333/postagens?page=${page + 1}`,
+            postagens: postagens.rows
+        })
+    } catch (error) {
+        response.status(500).json({message: "Erro ao buscar postagens"})
+    }
 }
 export const  getPostagemById = async (request, response) => { // RF03
     //IMPLEMENTAÇÃO DO ZOD
