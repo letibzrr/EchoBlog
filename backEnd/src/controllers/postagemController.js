@@ -153,4 +153,28 @@ export const  deletePostagem = async (request, response) => { // RF05
 }
 export const updateImagePostagem = async (request, response) => { // RF06
     //IMPLEMENTAÇÃO DO ZOD
+    const paramValidator = IdSchema.safeParse(request.params)
+    if(!paramValidator.success){
+        response.status(400).json({ 
+            message: "Número de identificação está inválido", 
+            detalhes: formatZodError(paramValidator.error) 
+        });
+        return;
+    }
+
+    const {id} = request.params
+    try {
+        if(!request.file) {
+            return response.status(400).json({ error: "Imagem não enviada" });
+        }      
+        const postagens = await Postagem.findByPk(id) 
+        if(postagens === null){
+            return response.status(404).json({message: "Postagem Não Encontrada"})
+        }
+         postagens.imagem = `/upload/${request.file.filename}`;
+        await postagens.save();
+        response.status(200).json({ message: "Imagem enviada para a postagem com sucesso", imagem: postagens.imagem });
+    } catch (error) {
+        response.status(500).json({message: "Erro ao enviar imagem"})
+    }
 }
