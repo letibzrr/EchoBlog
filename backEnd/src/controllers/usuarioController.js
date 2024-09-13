@@ -46,6 +46,25 @@ export const registerUser = async (request, response) => { // RF01
   }
 }
 export const loginUser = async (request, response) => { // RF02
+  try {
+    const { email, senha } = loginSchema.parse(request.body);
+
+    const usuario = await Usuario.findOne({ where: { email } });
+    if (!usuario) {
+      return response.status(404).json({ msg: "Usuário não encontrado" });
+    }
+
+    const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
+    if (!senhaCorreta) {
+      return response.status(401).json({ msg: "Senha incorreta" });
+    }
+
+    const token = jwt.sign({ id: usuario.id, papel: usuario.papel }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    response.status(200).json({ message: "Login realizado com sucesso", token });
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
 }
 export const updateUser = async (request, response) => { // RF03
 }
