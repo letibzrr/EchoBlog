@@ -10,7 +10,7 @@ router.post("/login", loginUser);
 router.put("/:id", verificarToken, updateUser);
 router.get("/", verificarPapelAdmin, listAllUser, verificarToken);
 router.delete("/:id", verificarPapelAdmin, deleteUser);
-router.patch("/id:/papel", UpdatePapelUser); 
+router.patch("/:id/papel", UpdatePapelUser); 
 
 export default router;
 

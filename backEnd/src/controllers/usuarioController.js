@@ -114,5 +114,21 @@ export const deleteUser = async (request, response) => { // RF05
     response.status(500).json({ error: "Erro ao excluir usuário", details: error.message });
   }
 }
-export const UpdatePapelUser = async (request, response) => { // 
+export const UpdatePapelUser = async (request, response) => { // RF06
+  try {
+    const { id } = request.params; 
+    const { papel } = papelSchema.parse(request.body); 
+
+    const usuario = await Usuario.findByPk(id);
+    if (!usuario) {
+      return response.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    usuario.papel = papel;
+    await usuario.save();
+
+    response.status(200).json({ message: "Papel do usuário atualizado com sucesso", usuario });
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
 }
