@@ -26,3 +26,18 @@ export const  deletePostagem = async (request, response) => { // RF05
 export const updateImagePostagem = async (request, response) => { // RF06
     //IMPLEMENTAÇÃO DO ZOD
 }
+export const listarPostagensPorAutor = async (request, response) => {
+    try {
+        const { autor } = request.query
+       
+        const filtro = {}
+        if(autor){
+            filtro.usuarioId = autor
+        }
+        const postagens = await Postagem.findAll({ where: filtro})
+
+        response.status(200).json(postagens)
+    } catch (error) {
+        response.status(500).json({ message: "Erro ao listar postagens", error: error.message })
+    }
+}

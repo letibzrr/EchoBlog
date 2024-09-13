@@ -6,9 +6,11 @@ import conn from "./config/conn.js"
 
 // IMPORTAÇÃO DE MODELOS
 import Postagem from "./models/postagemModel.js"
+import Usuario from "./models/usuarioModel.js"
 
 // IMPOTAÇÃO DE ROTAS
 import postagemRouter from "./routes/postagemRouter.js"
+import usuarioRouter from "./routes/usuarioRouter.js"
 
 const PORT = process.env.PORT || 3333
 const app = express()
@@ -29,6 +31,7 @@ conn
 
 // UTILIZAÇÃO DAS ROTAS
 app.use("/postagens", postagemRouter)
+app.use("/usuarios", usuarioRouter)
 
 app.use((request, response) => {
     response.status(404).json({message: "Rota não encontrada"})
