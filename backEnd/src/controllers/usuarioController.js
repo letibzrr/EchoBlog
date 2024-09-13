@@ -67,6 +67,28 @@ export const loginUser = async (request, response) => { // RF02
   }
 }
 export const updateUser = async (request, response) => { // RF03
+  try {
+    const { id } = request.params;
+    const { nome, email, senha } = updateSchema.parse(request.body);
+
+    const usuario = await Usuario.findByPk(id);
+    if (!usuario) {
+      return response.status(404).json({ msg: "Usuário não encontrado" });
+    }
+
+    usuario.nome = nome || usuario.nome;
+    usuario.email = email || usuario.email;
+
+    if (senha) {
+      usuario.senha = await bcrypt.hash(senha, 10);
+    }
+
+    await usuario.save();
+
+    response.status(200).json({ message: "Usuário atualizado com sucesso", usuario });
+  } catch (error) {
+    response.status(400).json({ error: error.message });
+  }
 }
 export const deleteUser = async (request, response) => { // RF04
 }
