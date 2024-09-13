@@ -34,3 +34,5 @@ export const Usuario = conn.define("usuarios", {
     tableName: "usuarios",
   }
 );
+
+export default Usuario;
