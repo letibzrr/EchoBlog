@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { createPostagem, getAllPostagem, getPostagemById, updatePostagen, deletePostagem, updateImagePostagem, listarPostagensPorAutor } from "../controllers/postagemController.js"
 import upload from "../middlewares/imagemMiddleware.js";
-import { verificarToken } from "../middlewares/authAdm.js";
+import { verificarToken } from "../middlewares/verifyToken.js"
 
 const router = Router()
 

@@ -90,9 +90,15 @@ export const updateUser = async (request, response) => { // RF03
     response.status(400).json({ error: error.message });
   }
 }
-export const deleteUser = async (request, response) => { // RF04
+export const listAllUser = async (request ,response) => { // RF04
+  try {
+    const usuarios = await Usuario.findAll();
+    response.status(200).json(usuarios);
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
 }
-export const listAllUser = async (request, response) => { // RF05
+export const deleteUser = async (request, response) => { // RF05
 }
-export const UpdatePapelUser = async (request, response) => { // RF06
+export const UpdatePapelUser = async (request, response) => { // 
 }
