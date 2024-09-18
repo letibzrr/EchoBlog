@@ -193,3 +193,4 @@ export const listarPostagensPorAutor = async (request, response) => {
         response.status(500).json({ message: "Erro ao listar postagens", error: error.message })
     }
 }
+
