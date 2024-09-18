@@ -5,8 +5,10 @@ import cors from "cors";
 import conn from "./config/conn.js"
 
 // IMPORTAÇÃO DE MODELOS
-import Postagem from "./models/postagemModel.js"
 import Usuario from "./models/usuarioModel.js"
+import Postagem from "./models/postagemModel.js"
+import Comentario from "./models/comentarioModel.js"
+import Curtida from "./models/curtidaModel.js"
 
 // IMPOTAÇÃO DE ROTAS
 import postagemRouter from "./routes/postagemRouter.js"

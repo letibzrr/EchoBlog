@@ -30,9 +30,7 @@ export const Usuario = conn.define("usuarios", {
     defaultValue: "leitor",
   },
 },
-  {
-    tableName: "usuarios",
-  }
+  {tableName: "usuarios",}
 );
 
 export default Usuario;

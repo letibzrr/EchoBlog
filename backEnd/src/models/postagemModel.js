@@ -1,5 +1,6 @@
 import conn from "../config/conn.js";
 import { DataTypes } from "sequelize";
+import Usuario from './usuarioModel.js'
 
 const Postagem = conn.define("postagens", {
     id: {
@@ -28,9 +29,10 @@ const Postagem = conn.define("postagens", {
         defaultValue: false
     },
 },
-{
-    tableName: "postagens",
-}
+{tableName: "postagens",}
 );
+// associação 1:N
+Usuario.hasOne(Postagem)
+Postagem.belongsTo(Usuario)
 
 export default Postagem;
